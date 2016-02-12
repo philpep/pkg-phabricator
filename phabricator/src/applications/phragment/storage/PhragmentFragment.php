@@ -154,7 +154,7 @@ final class PhragmentFragment extends PhragmentDAO
     try {
       $zip = new ZipArchive();
     } catch (Exception $e) {
-      // The server doesn't have php5-zip, so we can't do recursive updates.
+      // The server doesn't have php-zip, so we can't do recursive updates.
       return;
     }
 
