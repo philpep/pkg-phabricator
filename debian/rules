@@ -50,3 +50,13 @@ get-orig-source: $(info I: UDATE=$(UDATE))
 	XZ_OPT="-6v" tar -caf phabricator_$(VER).orig-arcanist.tar.xz arcanist-$(VER)
 	XZ_OPT="-6v" tar -caf phabricator_$(VER).orig-libphutil.tar.xz libphutil-$(VER)
 	rm -rf phabricator-$(VER) arcanist-$(VER) libphutil-$(VER)
+
+generate-manpage: debian/arc.1
+
+debian/arc.pod: debian/arc.cat1
+	debian/cat2pod < $< > $@
+
+debian/arc.1: debian/arc.pod
+	pod2man -r "" -c "User Commands" $< $@
+
+.PHONY: override_dh_clean get-orig-source generate-manpage

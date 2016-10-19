@@ -1,3 +1,15 @@
+phabricator (0~git20160124-1.1) unstable; urgency=medium
+
+  [ Andrew Shadura ]
+  * Non-maintainer upload.
+  * Regenerate the manual page.
+
+  [ Nishanth Aravamudan ]
+  * Update references to php7.0 packages (LP: #1544352, Closes: #821472,
+    #821543).
+
+ -- Andrew Shadura <andrewsh@debian.org>  Wed, 28 Sep 2016 22:45:18 +0200
+
 phabricator (0~git20160124-1) unstable; urgency=medium
 
   * New snapshot release

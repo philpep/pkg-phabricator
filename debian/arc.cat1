@@ -1,0 +1,1002 @@
+[1mNAME[m
+      [1marc[m - arcanist, a code review and revision management utility
+
+[1mSYNOPSIS[m
+      [1marc[m [4mcommand[m [[4moptions[m] [[4margs[m]
+      This help file provides a detailed command reference.
+
+[1mCOMMAND REFERENCE[m
+
+      [1malias[m
+      [1malias[m [4mcommand[m
+      [1malias[m [4mcommand[m [4mtarget[m -- [[4moptions[m]
+          Supports: cli
+          Create an alias from [4mcommand[m to [4mtarget[m (optionally, with
+          [4moptions[m). For example:
+
+            arc alias fpatch patch -- --force
+
+          ...will create a new 'arc' command, 'arc fpatch', which invokes
+          'arc patch --force ...' when run. NOTE: use "--" before specifying
+          options!
+
+          If you start an alias with "!", the remainder of the alias will be
+          invoked as a shell command. For example, if you want to implement
+          'arc ls', you can do so like this:
+
+            arc alias ls '!ls'
+
+          You can now run "arc ls" and it will behave like "ls". Of course, this
+          example is silly and would make your life worse.
+
+          You can not overwrite builtins, including 'alias' itself. The builtin
+          will always execute, even if it was added after your alias.
+
+          To remove an alias, run:
+
+            arc alias fpatch
+
+          Without any arguments, 'arc alias' will list aliases.
+
+
+      [1mamend[m [--revision [4mrevision_id[m] [--show]
+          Supports: git, hg
+          Amend the working copy, synchronizing the local commit message from
+          Differential.
+
+          Supported in Mercurial 2.2 and newer.
+
+          [4m--revision[m [4mrevision_id[m
+              Use the message from a specific revision. If you do not specify
+              a revision, arc will guess which revision is in the working
+              copy.
+
+          [4m--show[m
+              Show the amended commit message, without modifying the working
+              copy.
+
+
+      [1manoid[m
+          There's only one way to find out...
+
+
+      [1mbackout[m
+          Reverts/backouts on a previous commit. Supports: git, hg
+   Command is used like this: arc backout <commithash> | <diff revision>
+   Entering a differential revision will only work if there is only one commit
+   associated with the revision. This requires your working copy is up to date
+   and that the commit exists in the working copy.
+
+
+      [1mbookmark[m [[4moptions[m]
+      [1mbookmark[m [4mname[m [[4mstart[m]
+          Supports: hg
+          Alias for arc feature.
+
+          [4m--by-status[m
+              Sort branches by status instead of time.
+
+          [4m--output[m [4mformat[m
+              With 'json', show features in machine-readable JSON format.
+
+          [4m--view-all[m
+              Include closed and abandoned revisions.
+
+
+      [1mbranch[m [[4moptions[m]
+      [1mbranch[m [4mname[m [[4mstart[m]
+          Supports: git
+          Alias for arc feature.
+
+          [4m--by-status[m
+              Sort branches by status instead of time.
+
+          [4m--output[m [4mformat[m
+              With 'json', show features in machine-readable JSON format.
+
+          [4m--view-all[m
+              Include closed and abandoned revisions.
+
+
+      [1mbrowse[m [[4moptions[m] [4mpath[m ...
+      [1mbrowse[m [[4moptions[m] [4mobject[m ...
+          Supports: git, hg, svn
+          Open a file or object (like a task or revision) in your web browser.
+
+            $ arc browse README   # Open a file in Diffusion.
+            $ arc browse T123     # View a task.
+            $ arc browse HEAD     # View a symbolic commit.
+
+          Set the 'browser' value using 'arc set-config' to select a browser. If
+          no browser is set, the command will try to guess which browser to use.
+
+          [4m--branch[m [4mbranch_name[m
+              Default branch name to view on server. Defaults to "master".
+
+          [4m--force[m
+              Open arguments as paths, even if they do not exist in the
+              working copy.
+
+
+      [1mcall-conduit[m [4mmethod[m
+          Supports: http, https
+          Allows you to make a raw Conduit method call:
+
+            - Run this command from a working directory.
+            - Call parameters are REQUIRED and read as a JSON blob from stdin.
+            - Results are written to stdout as a JSON blob.
+
+          This workflow is primarily useful for writing scripts which integrate
+          with Phabricator. Examples:
+
+            $ echo '{}' | arc call-conduit conduit.ping
+            $ echo '{"phid":"PHID-FILE-xxxx"}' | arc call-conduit file.download
+
+
+      [1mclose[m [4mtask_id[m [[4moptions[m]
+        Close a task or otherwise update its status.
+
+          [4m--list-statuses[m
+              Show available status options and exit.
+
+          [4m--message[m [4mcomment[m, [4m-m[m [4mcomment[m
+              Provide a comment with your status change.
+
+          [4m--status[m [4mstatus[m, [4m-s[m [4mstatus[m
+              Specify a new status. Valid status options can be seen with the
+              `list-statuses` argument.
+
+
+      [1mclose-revision[m [[4moptions[m] [4mrevision[m
+          Supports: git, hg, svn
+          Close a revision which has been committed (svn) or pushed (git, hg).
+          You should not normally need to do this: arc commit (svn), arc amend
+          (git, hg), arc land (git, hg), or repository tracking on the master
+          remote repository should do it for you. However, if these mechanisms
+          have failed for some reason you can use this command to manually
+          change a revision status from "Accepted" to "Closed".
+
+          [4m--finalize[m
+              Close only if the repository is untracked and the revision is
+              accepted. Continue even if the close can't happen. This is a
+              soft version of '' used by other workflows.
+
+          [4m--quiet[m
+              Do not print a success message.
+
+
+      [1mcommit[m [--revision [4mrevision_id[m] [--show]
+          Supports: svn
+          Commit a revision which has been accepted by a reviewer.
+
+          [4m--revision[m [4mrevision_id[m
+              Commit a specific revision. If you do not specify a revision,
+              arc will look for committable revisions.
+
+          [4m--show[m
+              Show the command which would be issued, but do not actually
+              commit anything.
+
+
+      [1mcover[m [--rev [4mrevision[m] [[4mpath[m ...]
+          Supports: svn, git, hg
+          Cover your... professional reputation. Show blame for the lines you
+          changed in your working copy (svn) or since some commit (hg, git).
+          This will take a minute because blame takes a minute, especially under
+          SVN.
+
+          [4m--rev[m [4mrevision[m
+              Supports: git, hg
+              Cover changes since a specific revision.
+
+
+      [1mdiff[m [[4mpaths[m] (svn)
+      [1mdiff[m [[4mcommit[m] (git, hg)
+          Supports: git, svn, hg
+          Generate a Differential diff or revision from local changes.
+
+          Under git and mercurial, you can specify a commit (like [4mHEAD^^^[m
+          or [4mmaster[m) and Differential will generate a diff against the
+          merge base of that commit and your current working directory parent.
+
+          Under svn, you can choose to include only some of the modified files
+          in the working copy in the diff by specifying their paths. If you
+          omit paths, all changes are included in the diff.
+
+          [4m--add-all[m, [4m-a[m
+              Automatically add all unstaged and uncommitted files to the
+              commit.
+
+          [4m--advice[m
+              Require excuse for lint advice in addition to lint warnings and
+              errors.
+
+          [4m--allow-untracked[m
+              Skip checks for untracked files in the working copy.
+
+          [4m--amend-all[m
+              When linting git repositories, amend HEAD with all patches
+              suggested by lint without prompting.
+
+          [4m--amend-autofixes[m
+              When linting git repositories, amend HEAD with autofix patches
+              suggested by lint without prompting.
+
+          [4m--apply-patches[m
+              Apply patches suggested by lint to the working copy without
+              prompting.
+
+          [4m--base[m [4mrules[m
+              Supports: git, hg
+              Additional rules for determining base revision.
+
+          [4m--browse[m
+              After creating a diff or revision, open it in a web browser.
+
+          [4m--cache[m [4mbool[m
+              0 to disable lint cache, 1 to enable (default).
+
+          [4m--cc[m [4musernames[m
+              When creating a revision, add CCs.
+
+          [4m--coverage[m
+              Always enable coverage information.
+
+          [4m--create[m
+              Always create a new revision.
+
+          [4m--edit[m
+              Supports: git, hg
+              When updating a revision under git, edit revision information
+              before updating.
+
+          [4m--encoding[m [4mencoding[m
+              Attempt to convert non UTF-8 hunks into specified encoding.
+
+          [4m--excuse[m [4mexcuse[m
+              Provide a prepared in advance excuse for any lints/tests shall
+              they fail.
+
+          [4m--head[m [4mcommit[m
+              Supports: git
+              Specify the end of the commit range. This disables many
+              Arcanist/Phabricator features which depend on having access to
+              the working copy.
+
+          [4m--ignore-unsound-tests[m
+              Ignore unsound test failures without prompting.
+
+          [4m--json[m
+              Emit machine-readable JSON. EXPERIMENTAL! Probably does not
+              work!
+
+          [4m--less-context[m
+              Normally, files are diffed with full context: the entire file
+              is sent to Differential so reviewers can 'show more' and see
+              it. If you are making changes to very large files with tens of
+              thousands of lines, this may not work well. With this flag, a
+              diff will be created that has only a few lines of context.
+
+          [4m--lintall[m
+              Raise all lint warnings, not just those on lines you changed.
+
+          [4m--message[m [4mmessage[m, [4m-m[m [4mmessage[m
+              When updating a revision, use the specified message instead of
+              prompting.
+
+          [4m--message-file[m [4mfile[m, [4m-F[m [4mfile[m
+              When creating a revision, read revision information from this
+              file.
+
+          [4m--never-apply-patches[m
+              Never apply patches suggested by lint.
+
+          [4m--no-amend[m
+              Never amend commits in the working copy with lint patches.
+
+          [4m--no-coverage[m
+              Always disable coverage information.
+
+          [4m--no-diff[m
+              Only run lint and unit tests. Intended for internal use.
+
+          [4m--nolint[m
+              Do not run lint.
+
+          [4m--nounit[m
+              Do not run unit tests.
+
+          [4m--only[m
+              Only generate a diff, without running lint, unit tests, or
+              other auxiliary steps. See also --preview.
+
+          [4m--only-new[m [4mbool[m
+              Display only lint messages not present in the original code.
+
+          [4m--plan-changes[m
+              Create or update a revision without requesting a code review.
+
+          [4m--preview[m
+              Instead of creating or updating a revision, only create a diff,
+              which you may later attach to a revision. This still runs lint
+              unit tests. See also --only.
+
+          [4m--raw[m
+              Read diff from stdin, not from the working copy. This disables
+              many Arcanist/Phabricator features which depend on having
+              access to the working copy.
+
+          [4m--raw-command[m [4mcommand[m
+              Generate diff by executing a specified command, not from the
+              working copy. This disables many Arcanist/Phabricator features
+              which depend on having access to the working copy.
+
+          [4m--reviewers[m [4musernames[m
+              When creating a revision, add reviewers.
+
+          [4m--skip-binaries[m
+              Do not upload binaries (like images).
+
+          [4m--skip-staging[m
+              Do not copy changes to the staging area.
+
+          [4m--uncommitted[m
+              Supports: hg
+              Suppress warning about uncommitted changes.
+
+          [4m--update[m [4mrevision_id[m
+              Always update a specific revision.
+
+          [4m--use-commit-message[m [4mcommit[m, [4m-C[m [4mcommit[m
+              Supports: git
+              Read revision information from a specific commit.
+
+          [4m--verbatim[m
+              Supports: hg, git
+              When creating a revision, try to use the working copy commit
+              message verbatim, without prompting to edit it. When updating a
+              revision, update some fields from the local commit message.
+
+
+      [1mdownload[m [4mfile[m [--as [4mname[m] [--show]
+          Supports: filesystems
+          Download a file to local disk, e.g.:
+
+            $ arc download F33              # Download file 'F33'
+
+          [4m--as[m [4mname[m
+              Save the file with a specific name rather than the default.
+
+          [4m--show[m
+              Write file to stdout instead of to disk.
+
+
+      [1mexport[m [[4mpaths[m] [4mformat[m (svn)
+      [1mexport[m [[4mcommit_range[m] [4mformat[m (git, hg)
+      [1mexport[m [4m--revision[m [4mrevision_id[m [4mformat[m
+      [1mexport[m [4m--diff[m [4mdiff_id[m [4mformat[m
+          Supports: svn, git, hg
+          Export the local changeset (or a Differential changeset) to a file,
+          in some [4mformat[m: git diff ([4m--git[m), unified diff
+          ([4m--unified[m), or arc bundle ([4m--arcbundle[m [4mpath[m) format.
+
+          [4m--arcbundle[m [4mfile[m
+              Export change as an arc bundle. This format can represent all
+              changes. These bundles can be applied with 'arc patch'.
+
+          [4m--diff[m [4mdiff_id[m
+              Instead of exporting changes from the working copy, export them
+              from a Differential diff.
+
+          [4m--encoding[m [4mencoding[m
+              Attempt to convert non UTF-8 patch into specified encoding.
+
+          [4m--git[m
+              Export change as a git patch. This format is more complete than
+              unified, but less complete than arc bundles. These patches can
+              be applied with 'git apply' or 'arc patch'.
+
+          [4m--revision[m [4mrevision_id[m
+              Instead of exporting changes from the working copy, export them
+              from a Differential revision.
+
+          [4m--unified[m
+              Export change as a unified patch. This format is less complete
+              than git patches or arc bundles. These patches can be applied
+              with 'patch' or 'arc patch'.
+
+
+      [1mfeature[m [[4moptions[m]
+      [1mfeature[m [4mname[m [[4mstart[m]
+          Supports: git, hg
+          A wrapper on 'git branch' or 'hg bookmark'.
+
+          Without [4mname[m, it lists the available branches and their revision
+          status.
+
+          With [4mname[m, it creates or checks out a branch. If the branch
+          [4mname[m doesn't exist and is in format D123 then the branch of
+          revision D123 is checked out. Use [4mstart[m to specify where the new
+          branch will start. Use 'arc.feature.start.default' to set the default
+          feature start location.
+
+          [4m--by-status[m
+              Sort branches by status instead of time.
+
+          [4m--output[m [4mformat[m
+              With 'json', show features in machine-readable JSON format.
+
+          [4m--view-all[m
+              Include closed and abandoned revisions.
+
+
+      [1mflag[m [[4mobject[m ...]
+      [1mflag[m [4mobject[m --clear
+      [1mflag[m [4mobject[m [--edit] [--color [4mcolor[m] [--note [4mnote[m]
+          In the first form, list objects you've flagged. You can provide the
+          names of one or more objects (Maniphest tasks T[7m#, Differential
+          revisions D[m#, Diffusion references rXXX???, or PHIDs PHID-XXX-???)
+          to print only flags for those objects.
+
+          In the second form, clear an existing flag on one object.
+
+          In the third form, create or update a flag on one object. Color
+          defaults to blue and note to empty, but if you omit both you must
+          pass --edit.
+
+          [4m--clear[m
+              Delete the flag on an object.
+
+          [4m--color[m [4mcolor[m
+              Set the color of a flag.
+
+          [4m--edit[m
+              Edit the flag on an object.
+
+          [4m--note[m [4mnote[m
+              Set the note on a flag.
+
+
+      [1mget-config[m [[4moptions[m] -- [[4mname[m ...]
+          Supports: cli
+          Reads an arc configuration option. With no argument, reads all
+          options.
+
+          With [4m--verbose[m, shows detailed information about one or more
+          options.
+
+          [4m--verbose[m
+              Show detailed information about options.
+
+
+      [1mhelp[m [[4mcommand[m]
+      [1mhelp[m --full
+          Supports: english
+          Shows this help. With [4mcommand[m, shows help about a specific
+          command.
+
+          [4m--full[m
+              Print detailed information about each command.
+
+
+      [1minstall-certificate[m [uri]
+          Supports: http, https
+          Installs Conduit credentials into your ~/.arcrc for the given install
+          of Phabricator. You need to do this before you can use 'arc', as it
+          enables 'arc' to link your command-line activity with your account on
+          the web. Run this command from within a project directory to install
+          that project's certificate, or specify an explicit URI (like
+          "https://phabricator.example.com/").
+
+
+      [1mland[m [[4moptions[m] [[4mref[m]
+          Supports: git, hg
+
+          Publish an accepted revision after review. This command is the last
+          step in the standard Differential pre-publish code review workflow.
+
+          This command merges and pushes changes associated with an accepted
+          revision that are currently sitting in [4mref[m, which is usually the
+          name of a local branch. Without [4mref[m, the current working copy
+          state will be used.
+
+          Under Git: branches, tags, and arbitrary commits (detached HEADs)
+          may be landed.
+
+          Under Mercurial: branches and bookmarks may be landed, but only
+          onto a target of the same type. See T3855.
+
+          The workflow selects a target branch to land onto and a remote where
+          the change will be pushed to.
+
+          A target branch is selected by examining these sources in order:
+
+            - the [1m--onto[m flag;
+            - the upstream of the current branch, recursively (Git only);
+            - the [4marc.land.onto.default[m configuration setting;
+            - or by falling back to a standard default:
+              - "master" in Git;
+              - "default" in Mercurial.
+
+          A remote is selected by examining these sources in order:
+
+            - the [1m--remote[m flag;
+            - the upstream of the current branch, recursively (Git only);
+            - or by falling back to a standard default:
+              - "origin" in Git;
+              - the default remote in Mercurial.
+
+          After selecting a target branch and a remote, the commits which will
+          be landed are printed.
+
+          With [1m--preview[m, execution stops here, before the change is
+          merged.
+
+          The change is merged with the changes in the target branch,
+          following these rules:
+
+          In repositories with mutable history or with [1m--squash[m, this will
+          perform a squash merge (the entire branch will be represented as one
+          commit after the merge).
+
+          In repositories with immutable history or with [1m--merge[m, this will
+          perform a strict merge (a merge commit will always be created, and
+          local commits will be preserved).
+
+          The resulting commit will be given an up-to-date commit message
+          describing the final state of the revision in Differential.
+
+          In Git, the merge occurs in a detached HEAD. The local branch
+          reference (if one exists) is not updated yet.
+
+          With [1m--hold[m, execution stops here, before the change is pushed.
+
+          The change is pushed into the remote.
+
+          Consulting mystical sources of power, the workflow makes a guess
+          about what state you wanted to end up in after the process finishes
+          and the working copy is put into that state.
+
+          The branch which was landed is deleted, unless the [1m--keep-branch[m
+          flag was passed or the landing branch is the same as the target
+          branch.
+
+
+          [4m--delete-remote[m
+              Delete the feature branch in the remote after landing it.
+
+          [4m--hold[m
+              Prepare the change to be pushed, but do not actually push it.
+
+          [4m--keep-branch[m
+              Keep the feature branch after pushing changes to the remote (by
+              default, it is deleted).
+
+          [4m--merge[m
+              Supports: git
+              Perform a --no-ff merge, not a --squash merge. If the project
+              is marked as having an immutable history, this is the default
+              behavior.
+
+          [4m--onto[m [4mmaster[m
+              Land feature branch onto a branch other than the default
+              ('master' in git, 'default' in hg). You can change the default
+              by setting 'arc.land.onto.default' with `arc set-config` or for
+              the entire project in .arcconfig.
+
+          [4m--preview[m
+              Prints the commits that would be landed. Does not actually
+              modify or land the commits.
+
+          [4m--remote[m [4morigin[m
+              Push to a remote other than the default ('origin' in git).
+
+          [4m--revision[m [4mid[m
+              Use the message from a specific revision, rather than inferring
+              the revision based on branch content.
+
+          [4m--squash[m
+              Perform a --squash merge, not a --no-ff merge. If the project
+              is marked as having a mutable history, this is the default
+              behavior.
+
+          [4m--update-with-merge[m
+              Supports: git
+              When updating the feature branch, use merge instead of rebase.
+              This is the default behavior. Setting arc.land.update.default
+              to 'merge' can also be used to make this the default.
+
+          [4m--update-with-rebase[m
+              Supports: git
+              When updating the feature branch, use rebase instead of merge.
+              This might make things work better in some cases. Set
+              arc.land.update.default to 'rebase' to make this the default.
+
+
+      [1mliberate[m [[4mpath[m]
+          Supports: libphutil
+          Create or update a libphutil library, generating required metadata
+          files like [4minit[m.php.
+
+          [4m--all[m
+              Drop the module cache before liberating. This will completely
+              reanalyze the entire library. Thorough, but slow!
+
+          [4m--force-update[m
+              Force the library map to be updated, even in the presence of
+              lint errors.
+
+          [4m--library-name[m [4mname[m
+              Use a flag for library name rather than awaiting user input.
+
+
+      [1mlint[m [[4moptions[m] [[4mpaths[m]
+      [1mlint[m [[4moptions[m] --rev [[4mrev[m]
+          Supports: git, svn, hg
+          Run static analysis on changes to check for mistakes. If no files
+          are specified, lint will be run on all files which have been modified.
+
+          [4m--amend-all[m
+              When linting git repositories, amend HEAD with all patches
+              suggested by lint without prompting.
+
+          [4m--amend-autofixes[m
+              When linting git repositories, amend HEAD with autofix patches
+              suggested by lint without prompting.
+
+          [4m--apply-patches[m
+              Apply patches suggested by lint to the working copy without
+              prompting.
+
+          [4m--cache[m [4mbool[m
+              0 to disable cache, 1 to enable. The default value is
+              determined by 'arc.lint.cache' in configuration, which defaults
+              to off. See notes in 'arc.lint.cache'.
+
+          [4m--engine[m [4mclassname[m
+              Override configured lint engine for this project.
+
+          [4m--everything[m
+              Lint all files in the project.
+
+          [4m--lintall[m
+              Show all lint warnings, not just those on changed lines. When
+              paths are specified, this is the default behavior.
+
+          [4m--never-apply-patches[m
+              Never apply patches suggested by lint.
+
+          [4m--only-changed[m
+              Show lint warnings just on changed lines. When no paths are
+              specified, this is the default. This differs from only-new in
+              cases where line modifications introduce lint on other
+              unmodified lines.
+
+          [4m--only-new[m [4mbool[m
+              Supports: git, hg
+              Display only messages not present in the original code.
+
+          [4m--outfile[m [4mpath[m
+              Output the linter results to a file. Defaults to stdout.
+
+          [4m--output[m [4mformat[m
+              With 'summary', show lint warnings in a more compact format.
+              With 'json', show lint warnings in machine-readable JSON
+              format. With 'none', show no lint warnings. With 'compiler',
+              show lint warnings in suitable for your editor. With 'xml',
+              show lint warnings in the Checkstyle XML format.
+
+          [4m--rev[m [4mrevision[m
+              Supports: git, hg
+              Lint changes since a specific revision.
+
+          [4m--severity[m [4mstring[m
+              Set minimum message severity. One of: 'advice', 'autofix',
+              'warning', 'error', 'disabled'. Defaults to 'advice'.
+
+
+      [1mlinters[m [[4moptions[m] [[4mname[m]
+          Supports: cli
+          List the available and configured linters, with information about
+          what they do and which versions are installed.
+
+          if [4mname[m is provided, the linter with that name will be displayed.
+
+          [4m--search[m [4msearch[m
+              Search for linters. Search is case-insensitive, and is
+              performedagainst name and description of each linter.
+
+          [4m--verbose[m
+              Show detailed information, including options.
+
+
+      [1mlist[m
+          Supports: git, svn, hg
+          List your open Differential revisions.
+
+
+      [1mpaste[m [--title [4mtitle[m] [--lang [4mlanguage[m] [--json]
+      [1mpaste[m [4mid[m [--json]
+          Supports: text
+          Share and grab text using the Paste application. To create a paste,
+          use stdin to provide the text:
+
+            $ cat list_of_ducks.txt | arc paste
+
+          To retrieve a paste, specify the paste ID:
+
+            $ arc paste P123
+
+          [4m--json[m
+              Output in JSON format.
+
+          [4m--lang[m [4mlanguage[m
+              Language for syntax highlighting.
+
+          [4m--title[m [4mtitle[m
+              Title for the paste.
+
+
+      [1mpatch[m [4mD12345[m
+      [1mpatch[m [4m--revision[m [4mrevision_id[m
+      [1mpatch[m [4m--diff[m [4mdiff_id[m
+      [1mpatch[m [4m--patch[m [4mfile[m
+      [1mpatch[m [4m--arcbundle[m [4mbundlefile[m
+          Supports: git, svn, hg
+          Apply the changes in a Differential revision, patchfile, or arc
+          bundle to the working copy.
+
+          [4m--arcbundle[m [4mbundlefile[m
+              Apply changes from an arc bundle generated with 'arc export'.
+
+          [4m--diff[m [4mdiff_id[m
+              Apply changes from a Differential diff. Normally you want to
+              use --revision to get the most recent changes, but you can
+              specifically apply an out-of-date diff or a diff which was
+              never attached to a revision by using this flag.
+
+          [4m--encoding[m [4mencoding[m
+              Attempt to convert non UTF-8 patch into specified encoding.
+
+          [4m--force[m
+              Do not run any sanity checks.
+
+          [4m--nobranch[m
+              Supports: git, hg
+              Normally, a new branch (git) or bookmark (hg) is created and
+              then the patch is applied and committed in the new
+              branch/bookmark. This flag cherry-picks the resultant commit
+              onto the original branch and deletes the temporary branch.
+
+          [4m--nocommit[m
+              Supports: git, hg
+              Normally under git/hg, if the patch is successful, the changes
+              are committed to the working copy. This flag prevents the
+              commit.
+
+          [4m--patch[m [4mpatchfile[m
+              Apply changes from a git patchfile or unified patchfile.
+
+          [4m--revision[m [4mrevision_id[m
+              Apply changes from a Differential revision, using the most
+              recent diff that has been attached to it. You can run 'arc
+              patch D12345' as a shorthand.
+
+          [4m--skip-dependencies[m
+              Supports: git, hg
+              Normally, if a patch has dependencies that are not present in
+              the working copy, arc tries to apply them as well. This flag
+              prevents such work.
+
+          [4m--update[m
+              Supports: git, svn, hg
+              Update the local working copy before applying the patch.
+
+
+      [1mrevert[m
+    Please use arc backout instead
+
+
+      [1mset-config[m [[4moptions[m] -- [4mname[m [4mvalue[m
+          Supports: cli
+          Sets an arc configuration option.
+
+          Options are either user (apply to all arc commands you invoke
+          from the current user) or local (apply only to the current working
+          copy). By default, user configuration is written. Use [4m--local[m
+          to write local configuration.
+
+          User values are written to '~/.arcrc' on Linux and Mac OS X, and an
+          undisclosed location on Windows. Local values are written to an arc
+          directory under either .git, .hg, or .svn as appropriate.
+
+          [4m--local[m
+              Set a local config value instead of a user one.
+
+
+      [1mshell-complete[m [4m--current[m [4mN[m -- [[4margv[m]
+          Supports: bash, etc.
+          Implements shell completion. To use shell completion, source the
+          appropriate script from 'resources/shell/' in your .shellrc.
+
+          [4m--current[m [4mcursor_position[m
+              Current term in the argument list being completed.
+
+
+      [1mstart[m [4mobject[m
+          Start tracking work in Phrequent.
+
+
+      [1mstop[m [--note [4mnote[m] [[4mobjects[m]
+          Start tracking work in Phrequent.
+
+          [4m--note[m [4mnote[m
+              A note to attach to the tracked time.
+
+
+      [1mtasks[m [[4moptions[m]
+        View all assigned tasks.
+
+          [4m--limit[m [4mn[m
+              Limit the amount of tasks outputted, default is all.
+
+          [4m--order[m [4mtask_order[m
+              Arrange tasks based on priority, created, or modified, default
+              is priority.
+
+          [4m--owner[m [4musername[m
+              Only show tasks assigned to the given username, also accepts
+              @all to show all, default is you.
+
+          [4m--status[m [4mtask_status[m
+              Show tasks that are open or closed, default is open.
+
+          [4m--unassigned[m
+              Only show tasks that are not assigned (upforgrabs).
+
+
+      [1mtime[m
+          Show what you're currently tracking in Phrequent.
+
+
+      [1mtodo[m [4msummary[m [[4moptions[m]
+        Quickly create a task for yourself.
+
+          [4m--browse[m
+              After creating the task, open it in a web browser.
+
+          [4m--cc[m [4mcc[m, [4m-C[m [4mcc[m
+              Other users to CC on the new task.
+
+          [4m--project[m [4mproject[m
+              Projects to assign to the task.
+
+
+      [1munit[m [[4moptions[m] [[4mpaths[m]
+      [1munit[m [[4moptions[m] --rev [[4mrev[m]
+          Supports: git, svn, hg
+          Run unit tests that cover specified paths. If no paths are specified,
+          unit tests covering all modified files will be run.
+
+          [4m--coverage[m
+              Always enable coverage information.
+
+          [4m--detailed-coverage[m
+              Show a detailed coverage report on the CLI. Implies --coverage.
+
+          [4m--engine[m [4mclassname[m
+              Override configured unit engine for this project.
+
+          [4m--everything[m
+              Run every test.
+
+          [4m--json[m
+              Report results in JSON format.
+
+          [4m--no-coverage[m
+              Always disable coverage information.
+
+          [4m--output[m [4mformat[m
+              With 'full', show full pretty report (Default). With 'json',
+              report results in JSON format. With 'ugly', use uglier (but
+              more efficient) JSON formatting. With 'none', don't print
+              results.
+
+          [4m--rev[m [4mrevision[m
+              Supports: git, hg
+              Run unit tests covering changes since a specific revision.
+
+          [4m--target[m [4mphid[m
+              (PROTOTYPE) Record a copy of the test results on the specified
+              Harbormaster build target.
+
+          [4m--ugly[m
+              With --json, use uglier (but more efficient) formatting.
+
+
+      [1mupgrade[m
+          Supports: cli
+          Upgrade arcanist and libphutil to the latest versions.
+
+
+      [1mupload[m [4mfile[m [[4mfile[m ...] [--json]
+          Supports: filesystems
+          Upload a file from local disk.
+
+          [4m--json[m
+              Output upload information in JSON format.
+
+          [4m--temporary[m
+              Mark the file as temporary. Temporary files will be deleted
+              automatically after 24 hours.
+
+
+      [1mversion[m [[4moptions[m]
+          Supports: cli
+          Shows the current version of arcanist.
+
+
+      [1mwhich[m [options] (svn)
+      [1mwhich[m [options] [[4mcommit[m] (hg, git)
+          Supports: svn, git, hg
+          Shows which repository the current working copy corresponds to,
+          which commits 'arc diff' will select, and which revision is in
+          the working copy (or which revisions, if more than one matches).
+
+          [4m--any-status[m
+              Show committed and abandoned revisions.
+
+          [4m--base[m [4mrules[m
+              Supports: git, hg
+              Additional rules for determining base revision.
+
+          [4m--head[m [4mcommit[m
+              Supports: git
+              Specify the end of the commit range to select.
+
+          [4m--show-base[m
+              Supports: git, hg
+              Print base commit only and exit.
+
+
+[1mOPTION REFERENCE[m
+
+      [4m--trace[m
+          Debugging command. Shows underlying commands as they are executed,
+          and full stack traces when exceptions are thrown.
+
+      [4m--no-ansi[m
+          Output in plain ASCII text only, without color or style.
+
+      [4m--ansi[m
+          Use formatting even in environments which probably don't support it.
+          Example: arc --ansi unit | less -r
+
+      [4m--load-phutil-library=/path/to/library[m
+          Ignore libraries listed in .arcconfig and explicitly load specified
+          libraries instead. Mostly useful for Arcanist development.
+
+      [4m--conduit-uri[m [4muri[m
+          Ignore configured Conduit URI and use an explicit one instead. Mostly
+          useful for Arcanist development.
+
+      [4m--conduit-token[m [4mtoken[m
+          Ignore configured credentials and use an explicit API token instead.
+
+      [4m--conduit-version[m [4mversion[m
+          Ignore software version and claim to be running some other version
+          instead. Mostly useful for Arcanist development. May cause bad things
+          to happen.
+
+      [4m--conduit-timeout[m [4mtimeout[m
+          Override the default Conduit timeout. Specified in seconds.
+
+      [4m--config[m [4mkey=value[m
+          Specify a runtime configuration value. This will take precedence
+          over static values, and only affect the current arcanist invocation.
+
+      [4m--skip-arcconfig[m
+          Skip the working copy configuration file
+
+      [4m--arcrc-file[m [4mfilename[m
+          Use provided file instead of ~/.arcrc.

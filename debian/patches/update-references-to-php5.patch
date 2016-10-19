@@ -1,0 +1,99 @@
+Description: Refer to php-* named packages rather than php5-*
+Author: Nishanth Aravamudan <nish.aravamudan@canonical.com>
+Bug-Ubuntu: https://launchpad.net/bugs/1544352
+
+--- a/arcanist/scripts/arcanist.php
++++ b/arcanist/scripts/arcanist.php
+@@ -468,9 +468,8 @@
+     $need_functions = array(
+       'curl_init'     => array(
+         'text',
+-        "You need to install the cURL PHP extension, maybe with ".
+-        "'apt-get install php5-curl' or 'yum install php53-curl' or ".
+-        "something similar.",
++        "You need to install the cURL PHP extension, with ".
++        "'apt-get install php-curl'.",
+       ),
+       'json_decode'   => array('flag', '--without-json'),
+     );
+--- a/phabricator/src/applications/auth/provider/PhabricatorLDAPAuthProvider.php
++++ b/phabricator/src/applications/auth/provider/PhabricatorLDAPAuthProvider.php
+@@ -260,7 +260,7 @@
+           'talk to LDAP. Usually you can install it with '.
+           '`%s`, `%s`, or a similar package manager command.',
+           'yum install php-ldap',
+-          'apt-get install php5-ldap'));
++          'apt-get install php-ldap'));
+     }
+   }
+ 
+--- a/phabricator/src/applications/config/view/PhabricatorSetupIssueView.php
++++ b/phabricator/src/applications/config/view/PhabricatorSetupIssueView.php
+@@ -65,20 +65,16 @@
+         'Install these %d PHP extension(s):', count($extensions));
+ 
+       $install_info = pht(
+-        'You can usually install a PHP extension using %s or %s. Common '.
+-        'package names are %s or %s. Try commands like these:',
++        'You can usually install a PHP extension using %s. Common '.
++        'package names are %s. Try commands like these:',
+         phutil_tag('tt', array(), 'apt-get'),
+-        phutil_tag('tt', array(), 'yum'),
+-        hsprintf('<tt>php-<em>%s</em></tt>', pht('extname')),
+-        hsprintf('<tt>php5-<em>%s</em></tt>', pht('extname')));
++        hsprintf('<tt>php-<em>%s</em></tt>', pht('extname')));
+ 
+       // TODO: We should do a better job of detecting how to install extensions
+       // on the current system.
+       $install_commands = hsprintf(
+-        "\$ sudo apt-get install php5-<em>extname</em>  ".
+-        "# Debian / Ubuntu\n".
+-        "\$ sudo yum install php-<em>extname</em>       ".
+-        "# Red Hat / Derivatives");
++        "\$ sudo apt-get install php-<em>extname</em>  ".
++        "# Debian / Ubuntu\n");
+ 
+       $fallback_info = pht(
+         "If those commands don't work, try Google. The process of installing ".
+--- a/phabricator/src/applications/phragment/storage/PhragmentFragment.php
++++ b/phabricator/src/applications/phragment/storage/PhragmentFragment.php
+@@ -154,7 +154,7 @@
+     try {
+       $zip = new ZipArchive();
+     } catch (Exception $e) {
+-      // The server doesn't have php5-zip, so we can't do recursive updates.
++      // The server doesn't have php-zip, so we can't do recursive updates.
+       return;
+     }
+ 
+--- a/phabricator/src/docs/user/configuration/configuration_guide.diviner
++++ b/phabricator/src/docs/user/configuration/configuration_guide.diviner
+@@ -146,7 +146,7 @@
+ 
+ Finally, you should run the following commands to enable php support:
+ 
+-  $ sudo apt-get install php5-cgi  # for ubuntu; other distros should be similar
++  $ sudo apt-get install php-cgi  # for ubuntu; other distros should be similar
+   $ sudo lighty-enable-mod fastcgi-php
+ 
+ Restart lighttpd after making your edits, then continue below.
+--- a/phabricator/src/docs/user/field/restarting.diviner
++++ b/phabricator/src/docs/user/field/restarting.diviner
+@@ -112,5 +112,5 @@
+ 
+ ```
+ $ sudo /etc/init.d/php-fpm restart
+-$ sudo service php5-fpm reload
++$ sudo service php-fpm reload
+ ```
+--- a/phabricator/src/docs/user/installation_guide.diviner
++++ b/phabricator/src/docs/user/installation_guide.diviner
+@@ -123,7 +123,7 @@
+   - MySQL Server (usually "mysqld" or "mysql-server")
+   - PHP (usually "php")
+   - Required PHP extensions: mbstring, iconv, mysql (or mysqli), curl, pcntl
+-    (these might be something like "php-mysql" or "php5-mysql")
++    (these might be something like "php-mysql")
+   - Optional PHP extensions: gd, apc (special instructions for APC are available
+     below if you have difficulty installing it), xhprof (instructions below,
+     you only need this if you are developing Phabricator)
