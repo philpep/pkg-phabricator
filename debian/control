@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Richard Sellam <richard.sellam@orvidia.fr>
 Uploaders: Sylvestre Ledru <sylvestre@debian.org>
 Build-Depends: debhelper (>= 9), po-debconf
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Homepage: http://phabricator.org/
 Vcs-Browser: https://github.com/lenios/phabricator
 Vcs-Git: git://github.com/lenios/phabricator.git
@@ -37,8 +37,8 @@ Depends: arcanist,
          dbconfig-common (>= 1.8.8),
          fonts-font-awesome,
          jq,
-         libapache2-mod-php | libapache2-mod-phpfilter | php-fpm | php,
-         libjs-raphael,
+         libapache2-mod-php | php-fpm | php,
+         libjs-d3,
          libphutil (= ${source:Version}),
          php-cli,
          php-curl,
