@@ -1,3 +1,11 @@
+phabricator (0~git20160124-1.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add triggers to rebuild the phutil library map in Arcanist,
+    necessary to support extending Arcanist with external code.
+
+ -- Andrew Shadura <andrewsh@debian.org>  Fri, 21 Oct 2016 20:53:32 +0200
+
 phabricator (0~git20160124-1.1) unstable; urgency=medium
 
   [ Andrew Shadura ]

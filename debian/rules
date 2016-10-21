@@ -18,6 +18,10 @@ override_dh_clean:
 	debconf-updatepo
 	dh_clean
 
+override_dh_install:
+	dh_install
+	rm -f debian/arcanist/usr/share/arcanist/src/__phutil_library_map__.php
+
 ARCANIST = git://github.com/phacility/arcanist.git
 LIBPHUTIL = git://github.com/phacility/libphutil.git
 PHABRICATOR = git://github.com/phacility/phabricator.git
