@@ -828,7 +828,7 @@
 
 
       [1mstop[m [--note [4mnote[m] [[4mobjects[m]
-          Start tracking work in Phrequent.
+          Stop tracking work in Phrequent.
 
           [4m--note[m [4mnote[m
               A note to attach to the tracked time.

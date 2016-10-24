@@ -2332,7 +2332,7 @@ B<stop> [--note I<note>] [I<objects>]
 
 =over
 
-Start tracking work in Phrequent.
+Stop tracking work in Phrequent.
 
 
 =over
