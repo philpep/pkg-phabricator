@@ -1,3 +1,10 @@
+phabricator (0~git20160124-1.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Remove triggers added by the previous upload.
+
+ -- Andrew Shadura <andrew.shadura@collabora.co.uk>  Sat, 22 Oct 2016 23:11:34 +0200
+
 phabricator (0~git20160124-1.2) unstable; urgency=medium
 
   * Non-maintainer upload.
