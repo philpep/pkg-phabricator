@@ -1,8 +1,10 @@
 Source: phabricator
 Section: web
 Priority: optional
-Maintainer: Richard Sellam <richard.sellam@orvidia.fr>
-Uploaders: Sylvestre Ledru <sylvestre@debian.org>
+Maintainer: Andrew Shadura <andrewsh@debian.org>
+Uploaders:
+ Richard Sellam <richard.sellam@orvidia.fr>,
+ Sylvestre Ledru <sylvestre@debian.org>
 Build-Depends: debhelper (>= 9), po-debconf
 Standards-Version: 3.9.8
 Homepage: http://phabricator.org/
