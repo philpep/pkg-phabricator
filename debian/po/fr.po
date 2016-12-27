@@ -20,7 +20,7 @@ msgstr ""
 #. Description
 #: ../phabricator.templates:1001
 msgid "Domain name or subdomain name used by phabricator:"
-msgstr "Nom du domaine ou du sous-domaine utilisé par phabricator:"
+msgstr "Nom du domaine ou du sous-domaine utilisé par phabricator :"
 
 #. Type: string
 #. Description
@@ -31,15 +31,15 @@ msgid ""
 "install it to an entire domain or subdomain, like phabricator.example.com."
 msgstr ""
 "Phabricator doit être installé sur son propre domaine. Vous ne pouvez pas "
-"l'installer dans un sous-répertoire d'un domaine existant tel que exemple."
+"l'installer dans un sous-répertoire d'un domaine existant tel que example."
 "com/phabricator/. Vous devez au contraire l'installer sur un domaine ou un "
-"sous-domaine entier, comme par exemple phabricator.exemple.com."
+"sous-domaine entier, comme par exemple phabricator.example.com."
 
 #. Type: string
 #. Description
 #: ../phabricator.templates:2001
 msgid "hostname or IP address of the MySQL server:"
-msgstr "Nom d'hôte ou adresse IP du serveur MySQL:"
+msgstr "Nom d'hôte ou adresse IP du serveur MySQL :"
 
 #. Type: string
 #. Description
@@ -49,15 +49,15 @@ msgid ""
 "(referred as localhost), but some advanced users might want to put the "
 "database on a different host."
 msgstr ""
-"Phabricator est généralement installé avec la base de données MySQL sur la"
-"même machine (désignée par localhost), mais certains utilisateurs avancés"
+"Phabricator est généralement installé avec la base de données MySQL sur la "
+"même machine (désignée par localhost), mais certains utilisateurs avancés "
 "pourraient vouloir mettre la base de données sur une autre machine."
 
 #. Type: string
 #. Description
 #: ../phabricator.templates:3001
 msgid "MySQL administrator account username:"
-msgstr "Nom d'utilisateur d'un compte MySQL administrateur:"
+msgstr "Nom d'utilisateur d'un compte MySQL administrateur :"
 
 #. Type: string
 #. Description
@@ -73,7 +73,7 @@ msgstr ""
 #. Description
 #: ../phabricator.templates:3001
 msgid "You can create such a user with the following MySQL command:"
-msgstr "Vous pouvez créer un tel utilisateur avec la commande MySQL suivante:"
+msgstr "Vous pouvez créer un tel utilisateur avec la commande SQL suivante :"
 
 #. Type: string
 #. Description
@@ -96,7 +96,7 @@ msgstr "Mot de passe du compte administrateur MySQL :"
 #. Description
 #: ../phabricator.templates:5001
 msgid "MySQL administrator account password confirmation:"
-msgstr "Mot de passe du compte administrateur MySQL (confirmation):"
+msgstr "Mot de passe du compte administrateur MySQL (confirmation) :"
 
 #. Type: password
 #. Description
@@ -131,7 +131,7 @@ msgstr "Aucun"
 #. Description
 #: ../phabricator.templates:7002
 msgid "Web server:"
-msgstr "Serveur web:"
+msgstr "Serveur web :"
 
 #. Type: select
 #. Description
@@ -147,5 +147,5 @@ msgstr ""
 #: ../phabricator.templates:7002
 msgid "Select \"None\" if you would like to configure the web server manually."
 msgstr ""
-"Choisissez \"Aucun\" si vous souhaitez configurer le serveur web "
-"manuellement."
+"Choisissez \"Aucun\" si vous souhaitez configurer le serveur web vous-même."
+
