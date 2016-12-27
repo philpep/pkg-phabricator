@@ -1,3 +1,14 @@
+phabricator (0~git20160726-2) unstable; urgency=medium
+
+  [ Baptiste Jammet ]
+  * Update French debconf translation.
+
+  [ Andrew Shadura ]
+  * Update dependencies to make sure phabricator isn't installable on
+    anything but php5, but arcanist is installable regardless.
+
+ -- Andrew Shadura <andrewsh@debian.org>  Mon, 02 Jan 2017 20:08:07 +0100
+
 phabricator (0~git20160726-1) unstable; urgency=medium
 
   [ Richard Sellam ]
