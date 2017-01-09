@@ -1,3 +1,9 @@
+phabricator (0~git20160726-3) unstable; urgency=medium
+
+  * Don't build Phabricator package.
+
+ -- Andrew Shadura <andrewsh@debian.org>  Mon, 09 Jan 2017 14:26:10 +0100
+
 phabricator (0~git20160726-2) unstable; urgency=medium
 
   [ Baptiste Jammet ]

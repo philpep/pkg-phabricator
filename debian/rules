@@ -12,7 +12,7 @@ DTYPE =
 VER  ?= $(subst $(DTYPE),,$(UVER))
 
 %:
-	dh $@
+	dh $@ -Nphabricator
 
 override_dh_clean:
 	debconf-updatepo
